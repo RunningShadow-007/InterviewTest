@@ -1,10 +1,10 @@
 package com.crypto.interview.core.network.interceptors
 
 /**
- * Copyright:InterviewTest
+ * Copyright: InterviewTest
  * Author: liyang <br>
- * Date:2025/3/17 03:38<br>
- * Desc: <br>
+ * Date: 2025/3/17 03:38<br>
+ * Desc: Interceptor for dynamically processing API response fields.<br>
  */
 
 import com.crypto.interview.core.model.NetworkResponse
@@ -29,13 +29,13 @@ internal class DynamicFieldInterceptor(private val mediaType: MediaType) : Inter
         val bodyString = originalBody.string()
 
         try {
-            // 解析原始JSON
+            // Parse original JSON
             val jsonObject = JsonParser.parseString(bodyString).asJsonObject
 
-            // 提取公共字段
+            // Extract common fields
             val ok = jsonObject.get("ok")?.asBoolean == true
             val warning = jsonObject.get("warning")?.asString ?: ""
-            // 如果请求失败，直接返回错误响应
+            // Return error response immediately if request fails
             if (!ok) {
                 val errorResponse = NetworkResponse.Error(ok = false, error = warning)
                 return response.newBuilder()
@@ -43,29 +43,31 @@ internal class DynamicFieldInterceptor(private val mediaType: MediaType) : Inter
                     .build()
             }
 
-            // 找到数据字段（不是ok或warning的字段）
+            // Find data field (fields other than ok or warning)
             val dataFieldName = jsonObject.keySet().firstOrNull { it !in setOf("ok", "warning") }
-            // 如果找不到数据字段，返回错误
+            // Return error if data field not found
             if (dataFieldName == null) {
-                val errorResponse = NetworkResponse.Error(ok = false, error = "无法找到数据字段")
+                val errorResponse =
+                    NetworkResponse.Error(ok = false, error = "Data field not found")
                 return response.newBuilder()
                     .body(gson.toJson(errorResponse).toResponseBody(mediaType))
                     .build()
             }
 
-            // 构建标准化的JSON结构
+            // Build standardized JSON structure
             val standardizedJson = buildString {
                 append("""{"ok":$ok,"warning":"$warning","data":""")
                 append(jsonObject.get(dataFieldName).toString())
                 append("}")
             }
-            // 返回标准化的响应
+            // Return standardized response
             return response.newBuilder()
                 .body(standardizedJson.toResponseBody(mediaType))
                 .build()
         } catch (e: Exception) {
-            // 处理解析异常
-            val errorResponse = NetworkResponse.Error(ok = false, error = "解析响应时出错: ${e.message}")
+            // Handle parsing exceptions
+            val errorResponse =
+                NetworkResponse.Error(ok = false, error = "Error parsing response: ${e.message}")
             return response.newBuilder()
                 .body(gson.toJson(errorResponse).toResponseBody(mediaType))
                 .build()
@@ -74,7 +76,7 @@ internal class DynamicFieldInterceptor(private val mediaType: MediaType) : Inter
 }
 
 /**
- * 创建处理NetworkResponse的转换器工厂
+ * Factory for creating NetworkResponse converter
  */
 fun createNetworkResponseConverterFactory(gson: Gson = Gson()): Converter.Factory {
     return object : Converter.Factory() {
@@ -83,21 +85,21 @@ fun createNetworkResponseConverterFactory(gson: Gson = Gson()): Converter.Factor
             annotations: Array<Annotation>,
             retrofit: Retrofit
         ): Converter<okhttp3.ResponseBody, *>? {
-            // 检查是否是NetworkResponse类型
+            // Check if it's NetworkResponse type
             if (type is ParameterizedType && getRawType(type) == NetworkResponse::class.java) {
-                // 获取NetworkResponse的泛型参数类型
+                // Get generic parameter type of NetworkResponse
                 val responseType = getParameterUpperBound(0, type)
                 return NetworkResponseConverter<Any>(gson, responseType)
             }
 
-            // 对于其他类型，返回null让下一个转换器处理
+            // Return null for other types to let next converter handle
             return null
         }
     }
 }
 
 /**
- * NetworkResponse专用转换器
+ * Converter dedicated to NetworkResponse
  */
 private class NetworkResponseConverter<T>(
     private val gson: Gson,
@@ -110,19 +112,19 @@ private class NetworkResponseConverter<T>(
             val ok = jsonObject.get("ok")?.asBoolean == true
 
             if (ok) {
-                // 成功响应
+                // Success response
 
                 val data = gson.fromJson<T>(jsonObject.get("data").toString(), type)
                 NetworkResponse.Success(ok = true, data = data)
             } else {
 
-                // 错误响应
-                val error = jsonObject.get("warning")?.asString ?: "未知错误"
+                // Error response
+                val error = jsonObject.get("warning")?.asString ?: "Unknown error"
                 NetworkResponse.Error(ok = false, error = error)
             }
         } catch (e: Exception) {
-            // 处理异常
-            NetworkResponse.Error(ok = false, error = e.message ?: "未知错误")
+            // Handle exceptions
+            NetworkResponse.Error(ok = false, error = e.message ?: "Unknown error")
         } finally {
             value.close()
         }

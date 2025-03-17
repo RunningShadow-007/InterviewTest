@@ -6,8 +6,6 @@ package com.crypto.interview.feature.wallet.ui
  * Date:2025/3/16 00:01<br>
  * Desc: <br>
  */
-//import androidx.hilt.navigation.compose.hiltViewModel
-//import androidx.navigation.NavController
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -26,10 +24,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.crypto.interview.core.domain.model.WalletData
 import com.crypto.interview.core.ui.CardBackgroundColor
 import com.crypto.interview.feature.wallet.ui.components.CurrencyItemCard
