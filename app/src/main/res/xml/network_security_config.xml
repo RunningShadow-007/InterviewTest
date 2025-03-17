@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <!-- 开发环境允许明文通信 -->
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">123.57.210.143</domain>
+    </domain-config>
+
+    <!-- 生产环境推荐配置 -->
+    <!-- <base-config cleartextTrafficPermitted="false"/> -->
+</network-security-config>

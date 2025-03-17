@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">InterviewTest</string>
+    <string name="app_name">crypto.com</string>
+    <string name="wallet">Wallet</string>
+    <string name="defi">DeFi</string>
+    <string name="settings">Settings</string>
+    <string name="scan">Scan</string>
 </resources>

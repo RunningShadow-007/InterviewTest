@@ -1,7 +1,7 @@
 plugins {
     id("java-library")
-    alias(libs.plugins.jetbrains.kotlin.jvm)
     kotlin("kapt")
+    kotlin("jvm")
 }
 java {
     sourceCompatibility = JavaVersion.valueOf(libs.versions.javaVersion.get())
@@ -15,8 +15,8 @@ kotlin {
 }
 
 dependencies {
-    implementation(libs.hilt.core)
-    kapt(libs.hilt.compiler)
+//    implementation(libs.hilt.core)
+//    kapt(libs.hilt.compiler)
     implementation(libs.kotlinx.coroutines.core)
     testImplementation(libs.kotlinx.coroutines.test)
 }

@@ -1,11 +1,62 @@
 package com.crypto.interview.test.ui.theme
 
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
-val Purple80 = Color(0xFFD0BCFF)
-val PurpleGrey80 = Color(0xFFCCC2DC)
-val Pink80 = Color(0xFFEFB8C8)
 
-val Purple40 = Color(0xFF6650a4)
-val PurpleGrey40 = Color(0xFF625b71)
-val Pink40 = Color(0xFF7D5260)
+val OnBackground = Color(0xFFFFFFFF)
+val Background=Color(0xFFf2f9fe)
+
+val Gray = Color.Gray.copy(alpha = 0.7f)
+val FrenchGray = Color.Gray.copy(alpha = 0.3f)
+val OnBackgroundNight = Color.Black.copy(alpha = 0.7f)
+val BackgroundNight=Color.Black
+
+val TabItemSelectedColorLight=Color(0xFF408df1)
+val TabItemUnselectedColorLight=Gray
+val TabItemSelectedColorDark=Color(0xFF408df1)
+val TabItemUnselectedColorDark=FrenchGray
+
+val TabItemUnselectedColor: Color
+    @Composable
+    get() {
+        return if (isSystemInDarkTheme()) {
+            TabItemUnselectedColorDark
+        }else{
+            TabItemUnselectedColorLight
+        }
+    }
+val TabItemSelectedColor: Color
+    @Composable
+    get() {
+        return if (isSystemInDarkTheme()) {
+            TabItemSelectedColorDark
+        }else{
+            TabItemSelectedColorLight
+        }
+    }
+
+val TabBarBackgroundColor: Color
+    @Composable
+    get() {
+        return if (isSystemInDarkTheme()) {
+            OnBackgroundNight
+        }else{
+            OnBackground
+        }
+    }
+
+val MainScreenBackgroundColor: Color
+    @Composable
+    get() {
+        return if (isSystemInDarkTheme()) {
+            BackgroundNight
+        }else{
+            Background
+        }
+    }
+
+
+
+
