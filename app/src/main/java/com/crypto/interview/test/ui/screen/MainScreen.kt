@@ -2,6 +2,7 @@ package com.crypto.interview.test.ui.screen
 
 import android.util.Log
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -52,6 +53,7 @@ fun MainScreen(navController: NavController = rememberNavController()) {
 
     var selectedIndex by remember { mutableIntStateOf(0) }
     Scaffold(
+        contentWindowInsets = WindowInsets(0, 0, 0, 0),
         bottomBar = {
             NavigationBar(containerColor = TabBarBackgroundColor) {
                 NavItemArray.entries.forEachIndexed { index, item ->

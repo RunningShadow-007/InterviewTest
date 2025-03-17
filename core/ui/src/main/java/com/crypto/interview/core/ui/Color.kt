@@ -15,6 +15,9 @@ val OnBackgroundNight = Color.Black.copy(alpha = 0.7f)
 val BackgroundNight=Color.Black
 val Background=Color(0xFFf2f9fe)
 val OnBackground = Color(0xFFFFFFFF)
+val Gray = Color.Gray.copy(alpha = 0.7f)
+val FrenchGray = Color.Gray.copy(alpha = 0.3f)
+
 
 val ScreenBackgroundColor: Color
     @Composable

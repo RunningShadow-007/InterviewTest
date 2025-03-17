@@ -41,6 +41,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Color.Companion.Transparent
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -90,8 +91,7 @@ fun WalletScreen(onSettingClick: (() -> Unit)? = null, onScanClick: ((() -> Unit
     Column(
         modifier = Modifier
             .background(Color.Transparent)
-            .fillMaxSize()
-            .padding(0.dp),
+            .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
@@ -117,14 +117,21 @@ fun WalletScreen(onSettingClick: (() -> Unit)? = null, onScanClick: ((() -> Unit
 @Composable
 internal fun WalletContent(walletData: WalletData=WalletData(totalUsdValue = 10000.0, walletBalances = ArrayList(10) )) {
     ConstraintLayout(modifier = Modifier.fillMaxSize().background(color=WalletCardBackgroundColor)) {
-        val (settingId, scanId, brandDescId, totalBalanceId, sendId, receiveId, horizontalDividerId, currencyListId) = createRefs()
-
+        val (topSpacer,settingId, scanId, brandDescId, totalBalanceId, sendId, receiveId, horizontalDividerId, currencyListId) = createRefs()
+        Spacer(modifier = Modifier
+            .fillMaxWidth()
+            .height(32.dp)
+            .fillMaxWidth()
+            .constrainAs(topSpacer) {
+                top.linkTo(parent.top,20.dp)
+            }
+        )
         Image(
             painter = painterResource(id = R.drawable.wallet_ic_setting),
             contentDescription = "Setting",
             modifier = Modifier
                 .constrainAs(ref = settingId) {
-                    top.linkTo(parent.top, 16.dp)
+                    top.linkTo(topSpacer.bottom)
                     start.linkTo(parent.start, 16.dp)
                 }
                 .size(32.dp)
@@ -134,7 +141,7 @@ internal fun WalletContent(walletData: WalletData=WalletData(totalUsdValue = 100
             painter = painterResource(id = R.drawable.wallet_ic_scan),
             contentDescription = "Scan",
             modifier = Modifier.constrainAs(ref = scanId) {
-                top.linkTo(parent.top, 8.dp)
+                top.linkTo(settingId.top)
                 end.linkTo(parent.end, 8.dp)
             })
 
@@ -152,17 +159,14 @@ internal fun WalletContent(walletData: WalletData=WalletData(totalUsdValue = 100
 
         LazyColumn(
             modifier = Modifier
-                .background(color = CardBackgroundColor)
-                .fillMaxHeight(0.6f)
+                .background(color = CardBackgroundColor, shape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp))
+                .fillMaxHeight(0.55f)
+                .padding(top = 16.dp)
                 .constrainAs(currencyListId) {
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
                     bottom.linkTo(parent.bottom)
                 }
-                .shadow(
-                    elevation = 5.dp,
-                    shape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp)
-                )
         ) {
             items(
                 walletData.walletBalances.size,
@@ -239,7 +243,7 @@ private fun ConstraintLayoutScope.TotalBalanceCard(
             color = CardTextWhiteColor
         )
         VerticalDivider(
-            modifier = Modifier.height(32.dp),
+            modifier = Modifier.height(32.dp).padding(horizontal = 5.dp),
             thickness = 1.dp,
             color = CardTextLightGrayColor
         )

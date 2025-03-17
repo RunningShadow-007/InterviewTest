@@ -12,21 +12,13 @@ import androidx.compose.ui.graphics.Color
  */
 val Blue = Color(0xFF408df1)
 val BlueDark = Color(0xFF0c1c35)
-val Gray=Color(0xFF6a6a6a)
-val LightGray=Color(0xFFadafb1)
+val Gray = Color(0xFF6a6a6a)
+val LightGray = Color(0xFFadafb1)
 
 
-val WalletCardBackgroundColor: Color
-    @Composable
-    get() {
-        return if (isSystemInDarkTheme()) {
-            Blue
-        }else{
-            BlueDark
-        }
-    }
+val WalletCardBackgroundColor: Color = BlueDark
 
-val CardTextGrayColor: Color=Gray
-val CardTextLightGrayColor=LightGray
-val CardTextWhiteColor=Color.White
+val CardTextGrayColor: Color = Gray
+val CardTextLightGrayColor = LightGray
+val CardTextWhiteColor = Color.White
 
