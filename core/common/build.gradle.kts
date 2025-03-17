@@ -15,8 +15,8 @@ kotlin {
 }
 
 dependencies {
-//    implementation(libs.hilt.core)
-//    kapt(libs.hilt.compiler)
+    implementation(libs.hilt.core)
+    kapt(libs.hilt.compiler)
     implementation(libs.kotlinx.coroutines.core)
     testImplementation(libs.kotlinx.coroutines.test)
 }

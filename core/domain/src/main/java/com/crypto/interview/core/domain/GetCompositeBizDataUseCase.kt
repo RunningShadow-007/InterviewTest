@@ -1,11 +1,13 @@
 package com.crypto.interview.core.domain
 
+import com.crypto.interview.core.common.di.CryptoDispatchers
+import com.crypto.interview.core.common.di.Dispatcher
 import com.crypto.interview.core.data.repository.defi.DeFiDataRepository
 import com.crypto.interview.core.data.repository.setting.SettingDataRepository
-import com.crypto.interview.core.data.repository.wallet.WalletDataRepository
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -22,7 +24,8 @@ import javax.inject.Singleton
 @Singleton
 class GetCompositeBizDataUseCase @Inject constructor(
     private val deFiDataRepository: DeFiDataRepository,
-    private val settingDataRepository: SettingDataRepository
+    private val settingDataRepository: SettingDataRepository,
+    @Dispatcher(CryptoDispatchers.IO) private val ioDispatcher: CoroutineDispatcher,
 ) {
 
 
@@ -38,7 +41,7 @@ class GetCompositeBizDataUseCase @Inject constructor(
 //                    bizData
 //                }
             Result.success(combinedData)
-        }
+        }.flowOn(ioDispatcher)
     }
 
 }
