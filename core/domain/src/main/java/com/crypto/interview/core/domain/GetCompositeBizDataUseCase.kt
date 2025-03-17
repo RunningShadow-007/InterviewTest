@@ -16,6 +16,7 @@ import javax.inject.Singleton
  * Author: liyang <br>
  * Date:2025/3/16 13:16<br>
  * Desc: <br>
+ *
  * This is just a showcase of how to use the composite biz use case.
  *
  * Handles composite business logic by integrating multiple data sources
