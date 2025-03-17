@@ -4,7 +4,6 @@ plugins {
     alias(libs.plugins.hilt.android)
     id("com.google.devtools.ksp")
     alias(libs.plugins.kotlin.parcelize)
-    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -41,12 +40,11 @@ android {
 dependencies {
     implementation(project(":core:model"))
     implementation(project(":core:common"))
-    implementation(libs.kotlinx.serialization.json)
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
     implementation(libs.retrofit.converter.gson)
+    implementation(libs.gson)
     implementation(libs.retrofit.core)
-    implementation(libs.retrofit.kotlinx.serialization.converter)
     implementation(libs.okhttp.logging)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.tracing.ktx)

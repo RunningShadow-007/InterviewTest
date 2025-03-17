@@ -1,20 +1,11 @@
 package com.crypto.interview.core.model.wallet
 
-import kotlinx.serialization.Serializable
+import android.os.Parcelable
 import androidx.annotation.Keep
-
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
-
-/**
- * Copyright:InterviewTest
- * Author: liyang <br>
- * Date:2025/3/16 00:07<br>
- * Desc: <br>
- */
-
-
-@Serializable
+@Parcelize // 替换@Serializable
 @Keep
 data class Currency(
     @SerializedName("blockchain_symbol")
@@ -61,6 +52,5 @@ data class Currency(
     val tradingSymbol: String = "",
     @SerializedName("withdrawal_eta")
     val withdrawalEta: List<String> = listOf()
-)
-
+) : Parcelable // 新增接口实现
 

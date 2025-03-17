@@ -5,6 +5,7 @@ plugins {
     id("com.google.devtools.ksp")
     // id("com.google.dagger.hilt.android")
     // kotlin("kapt")
+    alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.kotlin.serialization)
 }
 
@@ -55,7 +56,6 @@ dependencies {
 //    ksp(libs.hilt.android.compiler)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    implementation(libs.kotlinx.serialization.json)
     implementation(libs.androidx.navigation.compose)
 
     implementation(platform(libs.androidx.compose.bom))
@@ -67,6 +67,7 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
+    implementation(libs.kotlinx.serialization.json)
     
     // Hilt
     // implementation("com.google.dagger:hilt-android:2.44")

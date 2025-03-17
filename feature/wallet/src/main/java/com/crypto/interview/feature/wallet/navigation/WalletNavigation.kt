@@ -7,6 +7,7 @@ package com.crypto.interview.feature.wallet.navigation
  * Date:2025/3/16 18:59<br>
  * Desc: <br>
  */
+import android.os.Parcelable
 import android.util.Log
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -14,6 +15,7 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.crypto.interview.feature.wallet.ui.WalletScreen
+import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.Serializable
 
 @Serializable

@@ -1,6 +1,7 @@
 package com.crypto.interview.core.model.wallet
 
-import kotlinx.serialization.Serializable
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 
 /**
  * Copyright:InterviewTest
@@ -8,8 +9,8 @@ import kotlinx.serialization.Serializable
  * Date:2025/3/16 00:09<br>
  * Desc: <br>
  */
-@Serializable
+@Parcelize
 data class WalletBalance(
     val currency: String,
     val amount: String
-)
+): Parcelable

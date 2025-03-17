@@ -1,23 +1,17 @@
 package com.crypto.interview.core.network.di
 
-import androidx.tracing.trace
-import com.crypto.interview.core.model.NetworkResponse
-import com.crypto.interview.core.network.interceptors.DynamicFieldInterceptor
-import com.crypto.interview.core.network.interceptors.ResponseInterceptor
-import com.crypto.interview.core.network.interceptors.asConverterFactory
-import com.crypto.interview.core.network.interceptors.createNetworkResponseConverterFactory
 //import com.crypto.interview.core.network.interceptors.createGsonConverterFactory
-import com.google.gson.GsonBuilder
-import kotlinx.serialization.builtins.serializer
 //import com.google.gson.GsonBuilder
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.modules.SerializersModule
+//import retrofit2.converter.gson.GsonConverterFactory
+import androidx.tracing.trace
+import com.crypto.interview.core.network.interceptors.DynamicFieldInterceptor
+import com.crypto.interview.core.network.interceptors.createNetworkResponseConverterFactory
+import com.google.gson.GsonBuilder
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-//import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 /**
@@ -78,21 +72,10 @@ internal class NetworkModule private constructor() {
         private fun retrofit(): Retrofit{
             return if (retrofit == null) {
                 val gson = GsonBuilder().setLenient().create()
-//                val json = Json {
-//                    ignoreUnknownKeys = true
-//                    explicitNulls = false
-//                    coerceInputValues = true
-//                    serializersModule = SerializersModule {
-//                        // 这里注册泛型的反序列化器
-//                        polymorphic(NetworkResponse::class, NetworkResponse.Success::class, NetworkResponse.Success.serializer())
-//                        polymorphic(NetworkResponse::class, NetworkResponse.Error::class, NetworkResponse.Error.serializer())
-//                    }
-//                }
                 retrofit = Retrofit.Builder()
                     .baseUrl(HOST)
                     .addConverterFactory(createNetworkResponseConverterFactory())
                     .addConverterFactory(GsonConverterFactory.create(gson))
-
                     .client(okHttpClient())
                     .build()
                 retrofit!!
