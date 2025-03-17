@@ -66,7 +66,14 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
     implementation(libs.kotlinx.serialization.json)
-    
+    testImplementation(project(":core:data"))
+    testImplementation(project(":core:network"))
+    testImplementation(libs.mockk)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(kotlin("test"))
+    testImplementation(libs.androidx.core.ktx)
+    testImplementation("androidx.arch.core:core-testing:2.2.0")
+
     // Hilt
     // implementation("com.google.dagger:hilt-android:2.44")
     // kapt("com.google.dagger:hilt-android-compiler:2.44")

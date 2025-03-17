@@ -1,9 +1,7 @@
 package com.crypto.interview.core.domain
 
 
-import android.util.Log
 import com.crypto.interview.core.common.maths.BigDecimalUtils
-import com.crypto.interview.core.data.di.DataModule
 import com.crypto.interview.core.data.repository.wallet.WalletDataRepository
 import com.crypto.interview.core.domain.model.CurrencyItem
 import com.crypto.interview.core.domain.model.WalletData
@@ -14,9 +12,7 @@ import com.crypto.interview.core.model.wallet.WalletBalance
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
-
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -38,7 +34,6 @@ class GetWalletBalanceUseCase @Inject constructor(private val repository: Wallet
             val balances = deferredBalances.await()
             val currencies = deferredCurrencies.await()
             val rates = deferredRates.await()
-            Log.d("UIDebug", "balances: $balances,\ncurrencies: $currencies,\nrates: $rates")
             val result =
                 if (balances is NetworkResponse.Success && currencies is NetworkResponse.Success && rates is NetworkResponse.Success) {
                     handleSuccessData(balances, currencies, rates)
@@ -99,7 +94,6 @@ private fun handleSuccessData(
         totalUsdValue = totalUsdValue,
         walletBalances = walletCoinBalanceList
     )
-    Log.e("UIDebug", "data: $data")
     return NetworkResponse.Success(
         ok = true,
         data = WalletData(

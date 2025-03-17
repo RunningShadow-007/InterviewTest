@@ -1,6 +1,5 @@
 package com.crypto.interview.feature.settings.navigation
 
-import android.util.Log
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
@@ -28,8 +27,6 @@ fun NavController.navigateToSettingScreen(navOptions: NavOptions? = null) =
 fun NavGraphBuilder.settingScreen(
     navController: NavController,
 ) {
-    Log.d("NavigationDebug", "CryptoNavHost settingScreen: ${navController.currentDestination}")
-
     composable<SettingScreenRoute>(
     ) {
         SettingScreen(navController)

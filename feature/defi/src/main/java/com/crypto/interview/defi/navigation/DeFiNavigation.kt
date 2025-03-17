@@ -7,7 +7,6 @@ package com.crypto.interview.defi.navigation
  * Desc: <br>
  */
 
-import android.util.Log
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
@@ -28,7 +27,6 @@ fun NavController.navigateToDeFiScreen(navOptions: NavOptions? = null) =
 fun NavGraphBuilder.defiScreen(
     navController: NavController,
 ) {
-    Log.d("NavigationDebug", "CryptoNavHost defiScreen: ${navController.currentDestination}")
 
     composable<DeFiScreenRoute>(
     ) {

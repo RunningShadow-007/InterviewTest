@@ -11,14 +11,9 @@ import io.mockk.mockk
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.assertThrows
 import org.junit.Before
 import org.junit.Test
-
-import java.math.BigDecimal
-import java.security.Timestamp
 
 /**
  * Unit tests for [GetWalletBalanceUseCase]
