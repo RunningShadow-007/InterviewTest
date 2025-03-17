@@ -54,7 +54,17 @@ dependencies {
     implementation(libs.hilt.android)
     ksp(libs.hilt.android.compiler)
     implementation(libs.hilt.core)
+
+
     testImplementation(libs.junit)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.androidx.core.ktx)
+    testImplementation(libs.mockk)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    testImplementation(project(":core:common"))
+    testImplementation(project(":core:model"))
+    testImplementation(project(":core:network"))
+    testImplementation(kotlin("test"))
+    testImplementation(libs.gson)
 }

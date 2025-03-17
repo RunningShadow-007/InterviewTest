@@ -8,8 +8,10 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import com.crypto.interview.test.R
@@ -45,6 +47,7 @@ internal fun RowScope.NavBarItem(
     onItemClicked: (Int) -> Unit
 ) {
     NavigationBarItem(
+        modifier = Modifier.testTag("MainScreen-NavBarItem$index"),
         selected = selectedIndex == index,
         onClick = {
             onItemClicked(index)

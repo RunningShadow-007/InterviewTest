@@ -51,7 +51,6 @@ dependencies {
     implementation(libs.androidx.tracing.ktx)
     implementation(libs.kotlinx.serialization.json)
 
-    implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
@@ -60,4 +59,10 @@ dependencies {
     androidTestImplementation(libs.mockk)
     androidTestImplementation(libs.mockk.android)
     testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(project(":core:common"))
+    testImplementation(project(":core:model"))
+    testImplementation(libs.retrofit.converter.gson)
+    testImplementation(libs.gson)
+    testImplementation(libs.retrofit.core)
+    testImplementation(libs.androidx.core.ktx)
 }

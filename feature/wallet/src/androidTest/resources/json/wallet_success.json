@@ -1,0 +1,20 @@
+{
+  "balances": [
+    {
+      "currency": "USD",
+      "amount": 1234.56,
+      "exchange_rate": 1.0
+    },
+    {
+      "currency": "BTC",
+      "amount": 0.5,
+      "exchange_rate": 45000.00
+    },
+    {
+      "currency": "ETH",
+      "amount": 2.3,
+      "exchange_rate": 3200.00
+    }
+  ],
+  "last_updated": "2024-03-15T12:34:56Z"
+}
