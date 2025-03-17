@@ -11,5 +11,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class WalletBalance(
     val currency: String,
-    val amount: Double
+    val amount: String
 )

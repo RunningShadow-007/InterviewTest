@@ -23,7 +23,7 @@ import kotlinx.serialization.json.*
 @Serializable
 sealed class NetworkResponse<out T> {
     data class Success<out T>(
-        val data: T?=null,
+        val data: T,
         val ok: Boolean,
         val warning: String = ""
     ) : NetworkResponse<T>()

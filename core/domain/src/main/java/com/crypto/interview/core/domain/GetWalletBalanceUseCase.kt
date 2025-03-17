@@ -2,6 +2,7 @@ package com.crypto.interview.core.domain
 
 
 import android.util.Log
+import com.crypto.interview.core.common.maths.BigDecimalUtils
 import com.crypto.interview.core.data.di.DataModule
 import com.crypto.interview.core.data.repository.wallet.WalletDataRepository
 import com.crypto.interview.core.data.repository.wallet.WalletDataRepositoryImpl
@@ -38,41 +39,50 @@ class GetWalletBalanceUseCase private constructor() {
 
     private val repository = DataModule.provideWalletDataRepository()
 
-     fun getWalletData(): Flow<NetworkResponse<WalletData>> = flow{
+    fun getWalletData(): Flow<NetworkResponse<WalletData>> = flow {
         coroutineScope {
             val deferredBalances = async { repository.getWalletBalances() }
             val deferredCurrencies = async { repository.getCurrencies() }
             val deferredRates = async { repository.getExchangeRates() }
 
-            // 等待所有结果
             val balances = deferredBalances.await()
             val currencies = deferredCurrencies.await()
             val rates = deferredRates.await()
             Log.d("UIDebug", "balances: $balances,\ncurrencies: $currencies,\nrates: $rates")
             val result =
                 if (balances is NetworkResponse.Success && currencies is NetworkResponse.Success && rates is NetworkResponse.Success) {
-                    val walletBalances = balances.data
-                    val currencyList = currencies.data
-                    val exchangeRates = rates.data
-                    // 计算所需的UI数据
-                    val items = currencyList?.map { currency ->
-                        val balance =
-                            walletBalances?.find { it.currency == currency.code }?.amount ?: 0.0
-                        val rate =
-                            exchangeRates?.find { it.fromCurrency == currency.code && it.toCurrency == "USD" }?.rate
-                                ?: 0.0
-                        val usdValue = balance * rate
+                    val balanceMap = balances.data.associate { it.currency to it.amount }
+                    val currencyMap = currencies.data.associate { it.code to it }
+                    val ratesMap = rates.data.associate { it.fromCurrency to it.rates[0].rate }
+
+                    val walletCoinBalanceList = balanceMap.map {
+                        val amount = it.value
+                        val code = it.key
+                        val rates = ratesMap[code] ?: "0.0"
+                        val currency = currencyMap[code] ?: Currency()
+                        val usdValue = BigDecimalUtils.calculateUsdValue(
+                            amount,
+                            rates,
+                            scale = currency.displayDecimal
+                        )
                         CurrencyItem(
                             currency = currency,
-                            balance = balance,
+                            amount = amount,
                             usdValue = usdValue
                         )
                     }
+                    val usdList = walletCoinBalanceList.map { it.usdValue }
+                    val totalUsdValue = BigDecimalUtils.calculateTotalBalance(usdList)
+                    val data = WalletData(
+                        totalUsdValue = totalUsdValue,
+                        walletBalances = walletCoinBalanceList
+                    )
+                    Log.e("UIDebug", "data: $data")
                     NetworkResponse.Success(
                         ok = true,
                         data = WalletData(
-                            totalUsdValue = items?.sumOf { it.usdValue } ?: 0.0,
-                            walletBalances = items ?: emptyList()
+                            totalUsdValue = totalUsdValue,
+                            walletBalances = walletCoinBalanceList
                         )
                     )
                 } else {

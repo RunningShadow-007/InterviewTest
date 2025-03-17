@@ -15,7 +15,13 @@ data class ExchangeRate(
     val fromCurrency: String,
     @SerializedName("to_currency")
     val toCurrency: String,
-    val rate: Double,
+    val rates: List<Rates>,
     val timestamp: String
+)
+
+@Serializable
+data class Rates(
+    val amount: String,
+    val rate: String
 )
 
