@@ -6,10 +6,8 @@ import com.crypto.interview.core.model.wallet.Currency
 import com.crypto.interview.core.model.wallet.ExchangeRate
 import com.crypto.interview.core.model.wallet.WalletBalance
 import com.crypto.interview.core.network.datasource.wallet.WalletDataSource
-import com.crypto.interview.core.network.datasource.wallet.WalletDataSourceImpl
+import kotlinx.serialization.InternalSerializationApi
 
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -22,11 +20,10 @@ import javax.inject.Singleton
  * Get wallet data from remote or local if business needed!
  * We can also cache data to local database, datastore or any appropriate place!
  *
- * Here just get data from remote
  */
-//@Singleton
- class WalletDataRepositoryImpl private constructor(
-    private val remoteDataSource: WalletDataSource= WalletDataSourceImpl.getInstance(),
+@Singleton
+ class WalletDataRepositoryImpl @Inject constructor(
+    private val remoteDataSource: WalletDataSource,
 ) :
     WalletDataRepository {
     /**
@@ -35,18 +32,18 @@ import javax.inject.Singleton
      */
 //    private val localDataSource= CryptoDataBase.getInstance()
 
-    companion object {
-        @Volatile
-        private var instance: WalletDataRepositoryImpl? = null
-        fun getInstance(): WalletDataRepositoryImpl {
-            return instance?: synchronized(this) {
-                instance?: WalletDataRepositoryImpl().also { instance = it }
-            }
-        }
-    }
+//    companion object {
+//        @Volatile
+//        private var instance: WalletDataRepositoryImpl? = null
+//        fun getInstance(): WalletDataRepositoryImpl {
+//            return instance ?: synchronized(this) {
+//                instance ?: WalletDataRepositoryImpl().also { instance = it }
+//            }
+//        }
+//    }
 
-    override suspend fun getWalletBalances(): NetworkResponse<List<WalletBalance>> { // 同步返回类型
-       return remoteDataSource.getWalletBalances()
+    override suspend fun getWalletBalances(): NetworkResponse<List<WalletBalance>> {
+        return remoteDataSource.getWalletBalances()
     }
 
     override suspend fun getExchangeRates(): NetworkResponse<List<ExchangeRate>> {

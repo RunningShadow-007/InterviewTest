@@ -7,8 +7,8 @@ plugins {
     alias(libs.plugins.kotlin.kapt) apply false
 //    id ("com.google.dagger.hilt.android") version "2.55" apply false
     kotlin("jvm") version "2.0.0" apply false
-    id("com.google.devtools.ksp") version "2.1.10-1.0.31" apply false
-//    alias(libs.plugins.hilt.android) apply false
+    alias(libs.plugins.ksp) apply false
+    alias(libs.plugins.hilt.android) apply false
     alias(libs.plugins.kotlin.serialization) apply false
 }
 

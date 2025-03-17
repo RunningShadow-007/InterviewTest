@@ -1,7 +1,7 @@
 package com.crypto.interview.test
 
 import android.app.Application
-//import dagger.hilt.android.HiltAndroidApp
+import dagger.hilt.android.HiltAndroidApp
 
 /**
  * Copyright:InterviewTest
@@ -9,7 +9,7 @@ import android.app.Application
  * Date:2025/3/16 20:12<br>
  * Desc: <br>
  */
-//@HiltAndroidApp
+@HiltAndroidApp
 class CryptoApp:Application() {
     override fun onCreate() {
         super.onCreate()

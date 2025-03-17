@@ -14,6 +14,7 @@ import com.crypto.interview.core.domain.model.CurrencyItem
 import com.crypto.interview.core.domain.model.WalletData
 import com.crypto.interview.core.model.NetworkResponse
 import com.crypto.interview.core.model.wallet.Currency
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 //import dagger.hilt.android.lifecycle.HiltViewModel
 
@@ -29,14 +30,14 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-//@HiltViewModel
-class WalletViewModel  constructor(val getWalletData: GetWalletBalanceUseCase= GetWalletBalanceUseCase.getInstance()) : ViewModel() {
+@HiltViewModel
+class WalletViewModel @Inject constructor(getWalletData: GetWalletBalanceUseCase) : ViewModel() {
     val walletUiState = getWalletData
         .getWalletData()
         .map { result ->
             when (result) {
                 is NetworkResponse.Success -> {
-                    WalletUiState.Success(result.data?: WalletData())
+                    WalletUiState.Success(result.data)
                 }
 
                 is NetworkResponse.Error -> {
@@ -45,9 +46,9 @@ class WalletViewModel  constructor(val getWalletData: GetWalletBalanceUseCase= G
             }
         }
         .flowOn(Dispatchers.IO)
-//        .catch {
-//            emit(WalletUiState.Failed(it.message ?: "Unknown Error"))
-//        }
+        .catch {
+            emit(WalletUiState.Failed(it.message ?: "Unknown Error"))
+        }
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5000, 0),

@@ -25,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -40,14 +41,8 @@ import com.crypto.interview.feature.wallet.viewmodel.WalletUiState
 import com.crypto.interview.feature.wallet.viewmodel.WalletViewModel
 
 @Composable
-fun WalletScreen(onSettingClick: (() -> Unit)? = null, onScanClick: ((() -> Unit))? = null) {
-    val viewModel: WalletViewModel = viewModel(
-        factory = object : ViewModelProvider.Factory {
-            override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return WalletViewModel() as T
-            }
-        }
-    )
+fun WalletScreen(onSettingClick: (() -> Unit)? = null) {
+    val viewModel: WalletViewModel = hiltViewModel()
 
     val walletState by viewModel.walletUiState.collectAsStateWithLifecycle()
 
@@ -65,7 +60,7 @@ fun WalletScreen(onSettingClick: (() -> Unit)? = null, onScanClick: ((() -> Unit
 
             is WalletUiState.Success -> {
                 val walletData = (walletState as WalletUiState.Success).walletData
-                WalletContent(walletData)
+                WalletContent(walletData, onSettingClick)
             }
 
             is WalletUiState.Failed -> {
@@ -78,7 +73,8 @@ fun WalletScreen(onSettingClick: (() -> Unit)? = null, onScanClick: ((() -> Unit
 
 @Composable
 internal fun WalletContent(
-    walletData: WalletData
+    walletData: WalletData,
+    onSettingClick: (() -> Unit)? = null
 ) {
     ConstraintLayout(
         modifier = Modifier
@@ -86,7 +82,7 @@ internal fun WalletContent(
             .background(color = WalletCardBackgroundColor)
     ) {
         val (topSpacer, settingId, scanId, brandDescId, totalBalanceId, sendId, receiveId, horizontalDividerId, currencyListId) = createRefs()
-        TopToolsBar(topSpacer, settingId, scanId)
+        TopToolsBar(topSpacer, settingId, scanId, onSettingClick)
         TotalBalanceCard(brandDescId, settingId, totalBalanceId, walletData)
         OperatorsCard(sendId, totalBalanceId, receiveId, horizontalDividerId, brandDescId)
         LazyColumn(

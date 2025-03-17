@@ -4,6 +4,7 @@ import com.crypto.interview.core.model.NetworkResponse
 import com.crypto.interview.core.model.wallet.Currency
 import com.crypto.interview.core.model.wallet.ExchangeRate
 import com.crypto.interview.core.model.wallet.WalletBalance
+import kotlinx.serialization.InternalSerializationApi
 import retrofit2.http.GET
 
 /**
@@ -12,6 +13,7 @@ import retrofit2.http.GET
  * Date:2025/3/16 00:57<br>
  * Desc: <br>
  */
+@OptIn(InternalSerializationApi::class)
 internal interface WalletApi {
     @GET("familyhelp/taylor/wallet-balance")
    suspend fun getWalletBalances(): NetworkResponse<List<WalletBalance>>

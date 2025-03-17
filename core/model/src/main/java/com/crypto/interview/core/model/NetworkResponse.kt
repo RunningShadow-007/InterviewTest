@@ -2,6 +2,7 @@ package com.crypto.interview.core.model
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
+import kotlinx.serialization.Serializable
 
 /**
  * Copyright:Crypto
@@ -10,16 +11,16 @@ import kotlinx.parcelize.RawValue
  * Desc: <br>
  */
 
-@Parcelize
-sealed class NetworkResponse<out T> : Parcelable{
-    @Parcelize
+@Serializable
+sealed class NetworkResponse<out T> {
+    @Serializable
     data class Success<out T>(
-        val data:  @RawValue T,
+        val data: T,
         val ok: Boolean,
         val warning: String = ""
     ) : NetworkResponse<T>()
 
-    @Parcelize
+    @Serializable
     data class Error(
         val error: String?=null,
         val ok: Boolean,

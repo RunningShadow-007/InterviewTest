@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
+import javax.inject.Singleton
 
 /**
  * Copyright:InterviewTest
@@ -18,24 +19,26 @@ import javax.inject.Inject
  * Handles composite business logic by integrating multiple data sources
  * to manage presentation layer operations.
  */
-class GetCompositeBizDataUseCase  constructor(
+@Singleton
+class GetCompositeBizDataUseCase @Inject constructor(
     private val deFiDataRepository: DeFiDataRepository,
-    private val walletDataRepository: WalletDataRepository,
     private val settingDataRepository: SettingDataRepository
 ) {
-    /*
-          operator fun invoke(): Flow<Result<Any>> {
-              return combine(
-                  deFiDataRepository.getSetting(),
-                  walletDataRepository.getWalletBalances(),
-              ){combinedData->
-                  settingDataRepository.getSetting()
-                      .map {it->
-                         //do something with combinedData and return ui layer needed
-                         combinedData
-                         bizData
-                      }
-              }
-          }
-      */
+
+
+    operator fun invoke(): Flow<Result<Any>> {
+        return combine(
+            deFiDataRepository.getDeFiData(),
+            settingDataRepository.getSetting()
+        ) { combinedData ->
+//            settingDataRepository.getSetting()
+//                .map { it ->
+//                    //do something with combinedData and return ui layer needed
+//                    combinedData
+//                    bizData
+//                }
+            Result.success(combinedData)
+        }
+    }
+
 }

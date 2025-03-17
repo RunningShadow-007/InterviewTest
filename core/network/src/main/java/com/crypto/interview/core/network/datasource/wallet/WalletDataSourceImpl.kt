@@ -1,15 +1,13 @@
 package com.crypto.interview.core.network.datasource.wallet
 
+import androidx.annotation.OptIn
 import com.crypto.interview.core.model.NetworkResponse
 import com.crypto.interview.core.model.wallet.Currency
 import com.crypto.interview.core.model.wallet.ExchangeRate
 import com.crypto.interview.core.model.wallet.WalletBalance
-import com.crypto.interview.core.network.di.NetworkModule
-//import com.crypto.interview.core.network.di.NetworkModule.Companion.provideService
-import retrofit2.Retrofit
+import kotlinx.serialization.InternalSerializationApi
 import javax.inject.Inject
 import javax.inject.Singleton
-import kotlin.getValue
 
 /**
  * Copyright:InterviewTest
@@ -17,31 +15,21 @@ import kotlin.getValue
  * Date:2025/3/16 01:10<br>
  * Desc: <br>
  */
-
- class WalletDataSourceImpl private constructor() :
+@OptIn(InternalSerializationApi::class)
+@Singleton
+internal class WalletDataSourceImpl @Inject constructor(private val walletApi: WalletApi) :
     WalletDataSource {
 
-    companion object {
-        @Volatile
-        private var instance: WalletDataSourceImpl? = null
-        fun getInstance(): WalletDataSourceImpl {
-            return instance?: synchronized(this) {
-                instance?: WalletDataSourceImpl().also { instance = it }
-            }
-        }
-    }
-    private val walletApi by lazy {
-//        retrofit.provideService(WalletApi::class.java)
-        NetworkModule.getInstance().provideService(WalletApi::class.java)
-    }
-
+    @kotlin.OptIn(InternalSerializationApi::class)
     override suspend fun getWalletBalances(): NetworkResponse<List<WalletBalance>> =
         walletApi.getWalletBalances()
 
+    @kotlin.OptIn(InternalSerializationApi::class)
     override suspend fun getExchangeRates(): NetworkResponse<List<ExchangeRate>> {
         return walletApi.getExchangeRates()
     }
 
+    @kotlin.OptIn(InternalSerializationApi::class)
     override suspend fun getCurrencies(): NetworkResponse<List<Currency>> {
         return walletApi.getCurrencies()
     }

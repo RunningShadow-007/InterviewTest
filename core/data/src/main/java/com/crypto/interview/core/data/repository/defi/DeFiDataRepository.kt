@@ -5,5 +5,5 @@ import com.crypto.interview.core.model.NetworkResponse
 import kotlinx.coroutines.flow.Flow
 
 interface DeFiDataRepository {
-   suspend fun getDeFiData(): NetworkResponse<Any>
+    fun getDeFiData(): Flow<NetworkResponse<Any>>
 }

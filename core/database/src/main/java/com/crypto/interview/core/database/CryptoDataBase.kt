@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.flowOf
  * A Room DataBase,just a demo class,no implementations <br>
  */
 
- class CryptoDataBase private constructor()
+class CryptoDataBase private constructor()
 //    :RoomDatabase()
 {
     companion object {
@@ -25,10 +25,12 @@ import kotlinx.coroutines.flow.flowOf
             }
         }
     }
-   suspend fun<T> getSettingData():T{
-        return flowOf(Any()) as T
+
+    fun getSettingData(): Flow<Any> {
+        return flowOf(Any())
     }
-    fun saveSettingData(){
+
+    fun saveSettingData() {
 
     }
 }

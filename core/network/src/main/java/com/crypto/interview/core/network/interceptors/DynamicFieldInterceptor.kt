@@ -22,7 +22,7 @@ import retrofit2.Retrofit
 import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
 
-class DynamicFieldInterceptor(private val mediaType: MediaType) : Interceptor {
+internal class DynamicFieldInterceptor(private val mediaType: MediaType) : Interceptor {
     private val gson = Gson()
 
     override fun intercept(chain: Interceptor.Chain): Response {

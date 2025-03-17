@@ -5,7 +5,6 @@ import android.util.Log
 import com.crypto.interview.core.common.maths.BigDecimalUtils
 import com.crypto.interview.core.data.di.DataModule
 import com.crypto.interview.core.data.repository.wallet.WalletDataRepository
-import com.crypto.interview.core.data.repository.wallet.WalletDataRepositoryImpl
 import com.crypto.interview.core.domain.model.CurrencyItem
 import com.crypto.interview.core.domain.model.WalletData
 import com.crypto.interview.core.model.NetworkResponse
@@ -19,6 +18,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
 
 import javax.inject.Inject
+import javax.inject.Singleton
 
 /**
  * Copyright:InterviewTest
@@ -26,18 +26,8 @@ import javax.inject.Inject
  * Date:2025/3/16 11:38<br>
  * Desc: <br>
  */
-class GetWalletBalanceUseCase private constructor() {
-    companion object {
-        @Volatile
-        private var instance: GetWalletBalanceUseCase? = null
-        fun getInstance(): GetWalletBalanceUseCase {
-            return instance ?: synchronized(this) {
-                instance ?: GetWalletBalanceUseCase().also { instance = it }
-            }
-        }
-    }
-
-    private val repository = DataModule.provideWalletDataRepository()
+@Singleton
+class GetWalletBalanceUseCase @Inject constructor(private val repository: WalletDataRepository) {
 
     fun getWalletData(): Flow<NetworkResponse<WalletData>> = flow {
         coroutineScope {
@@ -51,55 +41,72 @@ class GetWalletBalanceUseCase private constructor() {
             Log.d("UIDebug", "balances: $balances,\ncurrencies: $currencies,\nrates: $rates")
             val result =
                 if (balances is NetworkResponse.Success && currencies is NetworkResponse.Success && rates is NetworkResponse.Success) {
-                    val balanceMap = balances.data.associate { it.currency to it.amount }
-                    val currencyMap = currencies.data.associate { it.code to it }
-                    val ratesMap = rates.data.associate { it.fromCurrency to it.rates[0].rate }
-
-                    val walletCoinBalanceList = balanceMap.map {
-                        val amount = it.value
-                        val code = it.key
-                        val rates = ratesMap[code] ?: "0.0"
-                        val currency = currencyMap[code] ?: Currency()
-                        val usdValue = BigDecimalUtils.calculateUsdValue(
-                            amount,
-                            rates,
-                            scale = currency.displayDecimal
-                        )
-                        CurrencyItem(
-                            currency = currency,
-                            amount = amount,
-                            usdValue = usdValue
-                        )
-                    }
-                    val usdList = walletCoinBalanceList.map { it.usdValue }
-                    val totalUsdValue = BigDecimalUtils.calculateTotalBalance(usdList)
-                    val data = WalletData(
-                        totalUsdValue = totalUsdValue,
-                        walletBalances = walletCoinBalanceList
-                    )
-                    Log.e("UIDebug", "data: $data")
-                    NetworkResponse.Success(
-                        ok = true,
-                        data = WalletData(
-                            totalUsdValue = totalUsdValue,
-                            walletBalances = walletCoinBalanceList
-                        )
-                    )
+                    handleSuccessData(balances, currencies, rates)
                 } else {
-                    // 收集所有错误信息
-                    val errors = listOf(balances, currencies, rates)
-                        .filterIsInstance<NetworkResponse.Error>()
-                        .map { it.error }
-                    NetworkResponse.Error(
-                        ok = false,
-                        error = GetWalletBalancesException(errors as List<String>).message
-                            ?: "Unknown error"
-                    )
+                    handleErrorMessage(balances, currencies, rates)
                 }
             emit(result)
         }
     }
 
+}
+
+private fun handleErrorMessage(
+    balances: NetworkResponse<List<WalletBalance>>,
+    currencies: NetworkResponse<List<Currency>>,
+    rates: NetworkResponse<List<ExchangeRate>>
+): NetworkResponse.Error {
+    // 收集所有错误信息
+    val errors = listOf(balances, currencies, rates)
+        .filterIsInstance<NetworkResponse.Error>()
+        .map { it.error }
+    return NetworkResponse.Error(
+        ok = false,
+        error = GetWalletBalancesException(errors as List<String>).message
+            ?: "Unknown error"
+    )
+}
+
+private fun handleSuccessData(
+    balances: NetworkResponse.Success<List<WalletBalance>>,
+    currencies: NetworkResponse.Success<List<Currency>>,
+    rates: NetworkResponse.Success<List<ExchangeRate>>
+): NetworkResponse.Success<WalletData> {
+    var rates1 = rates
+    val balanceMap = balances.data.associate { it.currency to it.amount }
+    val currencyMap = currencies.data.associate { it.code to it }
+    val ratesMap = rates1.data.associate { it.fromCurrency to it.rates[0].rate }
+
+    val walletCoinBalanceList = balanceMap.map {
+        val amount = it.value
+        val code = it.key
+        val rates = ratesMap[code] ?: "0.0"
+        val currency = currencyMap[code] ?: Currency()
+        val usdValue = BigDecimalUtils.calculateUsdValue(
+            amount,
+            rates,
+            scale = currency.displayDecimal
+        )
+        CurrencyItem(
+            currency = currency,
+            amount = amount,
+            usdValue = usdValue
+        )
+    }
+    val usdList = walletCoinBalanceList.map { it.usdValue }
+    val totalUsdValue = BigDecimalUtils.calculateTotalBalance(usdList)
+    val data = WalletData(
+        totalUsdValue = totalUsdValue,
+        walletBalances = walletCoinBalanceList
+    )
+    Log.e("UIDebug", "data: $data")
+    return NetworkResponse.Success(
+        ok = true,
+        data = WalletData(
+            totalUsdValue = totalUsdValue,
+            walletBalances = walletCoinBalanceList
+        )
+    )
 }
 
 class GetWalletBalancesException(errors: List<String>) : Exception(

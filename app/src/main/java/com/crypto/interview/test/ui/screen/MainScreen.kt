@@ -24,8 +24,8 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.rememberNavController
 import com.crypto.interview.defi.navigation.navigateToDeFiScreen
 import com.crypto.interview.defi.ui.screen.DeFiScreen
-import com.crypto.interview.feature.wallet.navigation.WalletScreenRoute
-import com.crypto.interview.feature.wallet.navigation.navigateToWalletScreen
+import com.crypto.interview.feature.settings.navigation.SettingScreenRoute
+
 import com.crypto.interview.feature.wallet.ui.WalletScreen
 import com.crypto.interview.test.ui.components.NavBarItem
 import com.crypto.interview.test.ui.components.NavItemArray
@@ -43,11 +43,6 @@ import kotlinx.serialization.Serializable
 data object MainScreenRoute
 
 
-fun NavController.navigateToWalletScreen(navOptions: NavOptions? = null) =
-    navigate(route = WalletScreenRoute, navOptions)
-
-
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(navController: NavController = rememberNavController()) {
@@ -62,14 +57,14 @@ fun MainScreen(navController: NavController = rememberNavController()) {
                         index = index,
                         selectedIndex = selectedIndex,
                         icon = item.icon,
-                        label =item.label
-                    ){
+                        label = item.label
+                    ) {
                         Log.d("NavigationDebug", "NavTab clicked: ${it}")
                         selectedIndex = it
                     }
                 }
             }
-        }) {contentPadding ->
+        }) { contentPadding ->
         Surface(
             color = MainScreenBackgroundColor,
             modifier = Modifier
@@ -77,7 +72,10 @@ fun MainScreen(navController: NavController = rememberNavController()) {
                 .padding(contentPadding),
         ) {
             when (selectedIndex) {
-                NavItemArray.NAV_WALLET.ordinal-> WalletScreen()
+                NavItemArray.NAV_WALLET.ordinal -> WalletScreen(onSettingClick = {
+                    navController.navigate(SettingScreenRoute)
+                })
+
                 NavItemArray.NAV_DEFI.ordinal -> DeFiScreen()
             }
         }

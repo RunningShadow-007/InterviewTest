@@ -2,6 +2,7 @@ package com.crypto.interview.core.network.datasource.defi
 
 import com.crypto.interview.core.model.NetworkResponse
 import kotlinx.coroutines.flow.Flow
+import kotlinx.serialization.InternalSerializationApi
 import retrofit2.http.GET
 
 /**
@@ -11,6 +12,6 @@ import retrofit2.http.GET
  * Desc: <br>
  */
 internal interface DeFiApi {
-    @GET("defi/data")
-    suspend fun getDeFiData(): NetworkResponse<Any>
+    //    @GET("defi/data")
+    fun getDeFiData(): Flow<Any>
 }

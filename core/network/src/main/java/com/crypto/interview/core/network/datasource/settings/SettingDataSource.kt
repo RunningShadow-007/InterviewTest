@@ -2,6 +2,7 @@ package com.crypto.interview.core.network.datasource.settings
 
 
 import com.crypto.interview.core.model.NetworkResponse
+import kotlinx.coroutines.flow.Flow
 import retrofit2.http.GET
 
 /**
@@ -11,6 +12,5 @@ import retrofit2.http.GET
  * Desc: <br>
  */
 interface SettingDataSource {
-    @GET("setting/info")
-   suspend fun getSetting(): NetworkResponse<Any>
+    fun getSetting(): Flow<Any>
 }

@@ -1,6 +1,8 @@
 package com.crypto.interview.core.network.datasource.settings
 
 import com.crypto.interview.core.model.NetworkResponse
+import kotlinx.coroutines.flow.Flow
+import kotlinx.serialization.InternalSerializationApi
 import retrofit2.http.GET
 
 /**
@@ -10,6 +12,6 @@ import retrofit2.http.GET
  * Desc: <br>
  */
 internal interface SettingApi {
-    @GET("settings/userinfo")
-  suspend  fun getSettings(): NetworkResponse<Any>
+    //    @GET("settings/userinfo")
+    fun getSettings(): Flow<NetworkResponse<Any>>
 }

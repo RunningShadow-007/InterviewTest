@@ -3,8 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
-//    alias(libs.plugins.hilt.android)
-//    id("dagger.hilt.android.plugin")
+    alias(libs.plugins.hilt.android)
     id("com.google.devtools.ksp")
 }
 
@@ -67,9 +66,9 @@ dependencies {
     implementation(libs.androidx.core.splashscreen)
     implementation(libs.androidx.annotation)
     implementation(libs.kotlinx.serialization.json)
-//    implementation(libs.hilt.android)
-//    ksp(libs.hilt.compiler)
-//    ksp(libs.hilt.android.compiler)
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.compiler)
+    ksp(libs.hilt.android.compiler)
 
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.android)

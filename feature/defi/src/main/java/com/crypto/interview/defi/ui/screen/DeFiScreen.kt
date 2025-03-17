@@ -1,5 +1,6 @@
 package com.crypto.interview.defi.ui.screen
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.crypto.interview.defi.ui.component.DeFiCard
@@ -19,7 +21,6 @@ import com.crypto.interview.defi.ui.component.DeFiCard
  * Date:2025/3/15 23:27<br>
  * Desc: <br>
  */
-@Preview
 @Composable
  fun DeFiScreen() {
     Column(
@@ -28,6 +29,7 @@ import com.crypto.interview.defi.ui.component.DeFiCard
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
+        Spacer(modifier = Modifier.height(20.dp).background(Color.Transparent))
         DeFiCard(title = "质押", description = "质押您的加密货币以赚取收益")
 
         Spacer(modifier = Modifier.height(6.dp))

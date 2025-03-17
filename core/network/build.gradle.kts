@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.hilt.android)
     id("com.google.devtools.ksp")
     alias(libs.plugins.kotlin.parcelize)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -48,6 +49,7 @@ dependencies {
     implementation(libs.okhttp.logging)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.tracing.ktx)
+    implementation(libs.kotlinx.serialization.json)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

@@ -1,11 +1,12 @@
 package com.crypto.interview.core.network.datasource.settings
 
-//import com.crypto.interview.core.network.di.NetworkModule.Companion.provideService
 import com.crypto.interview.core.model.NetworkResponse
-import com.crypto.interview.core.network.di.NetworkModule
-import retrofit2.Retrofit
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.serialization.InternalSerializationApi
 import javax.inject.Inject
 import javax.inject.Singleton
+
 
 /**
  * Copyright:InterviewTest
@@ -13,26 +14,14 @@ import javax.inject.Singleton
  * Date:2025/3/16 01:10<br>
  * Desc: <br>
  */
-//@Singleton
- class SettingDataSourceImpl private constructor() :
+@Singleton
+@OptIn(InternalSerializationApi::class)
+internal class SettingDataSourceImpl @Inject constructor() :
     SettingDataSource {
 
-    companion object {
-        @Volatile
-        private var instance: SettingDataSourceImpl? = null
-        fun getInstance(): SettingDataSourceImpl {
-            return instance?: synchronized(this) {
-                instance?: SettingDataSourceImpl().also { instance = it }
-            }
+    override fun getSetting(): Flow<Any> {
+        return flow {
+            emit(Any())
         }
     }
-    private val settingApi by lazy {
-//        retrofit.provideService(SettingApi::class.java)
-        NetworkModule.getInstance().provideService(SettingApi::class.java)
-    }
-
-    override suspend fun getSetting(): NetworkResponse<Any> {
-        return settingApi.getSettings()
-    }
-
 }

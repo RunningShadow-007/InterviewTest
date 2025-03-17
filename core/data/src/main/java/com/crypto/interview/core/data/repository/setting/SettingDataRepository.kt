@@ -5,5 +5,5 @@ import com.crypto.interview.core.model.NetworkResponse
 import kotlinx.coroutines.flow.Flow
 
 interface SettingDataRepository {
-   suspend fun getSetting(): NetworkResponse<Any>
+    fun getSetting(): Flow<Any>
 }
